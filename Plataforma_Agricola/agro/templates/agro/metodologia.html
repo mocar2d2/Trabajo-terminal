@@ -1,0 +1,23 @@
+{% extends "agro/base.html" %}
+{% block titulo %}Metodología{% endblock %}
+{% block contenido %}
+<header class="seccion-encabezado seccion-encabezado--solo-titulo">
+  <h1>Metodología</h1>
+</header>
+<section class="texto">
+  <h2>Precios</h2>
+  <p>El SNIIM publica los precios mayoristas de la Central de Abasto de Iztapalapa. La plataforma incluye siete productos agrupados en cinco cultivos: maíz (blanco y blanco pozolero), frijol (pinto y negro), haba, tomate saladette y aguacate Hass. Los granos se cotizan semanalmente y las hortalizas, en días hábiles; todos los precios están en pesos por kilogramo ({{ unidades.granos }}).</p>
+  <p>Para construir la serie semanal, se promedia el precio frecuente de cada día y, después, el de cada semana, de lunes a domingo. Si un producto proviene de varios estados, las series de cada origen se armonizan mediante su diferencia promedio antes de combinarse.</p>
+  <h2>Clima</h2>
+  <p>Se utilizan la temperatura máxima, la temperatura mínima y la precipitación semanales registradas por estaciones del SMN asignadas a los municipios que concentran la mitad de la producción nacional de granos. Cada semana termina el miércoles. El valor de cada estado es el promedio de sus estaciones; los valores mensuales y anuales promedian las temperaturas y suman la precipitación de las semanas que terminan en el periodo.</p>
+  <h2>Series y pronóstico</h2>
+  <p>El método STL separa la serie histórica en tendencia, patrones que se repiten en ciertas épocas del año (estacionalidad anual de 52 semanas) y variaciones restantes (residuo); requiere al menos dos años de datos.</p>
+  <p>Para el pronóstico se usa el precio semanal de jueves a miércoles de haba, maíz blanco, frijol pinto, aguacate Hass y tomate saladette. Las semanas sin cotización se completan por interpolación solo para estimar los modelos y no intervienen en su evaluación. Con los datos de 2015 a 2024 se estiman un SARIMA con estacionalidad de 52 semanas, cuyo orden se elige por AIC; un SARIMAX que agrega la temperatura máxima, la temperatura mínima y la precipitación de las estaciones asignadas a los municipios que concentran la mitad de la producción nacional, ponderadas por su producción y con un rezago de 0 a 100 semanas elegido por AIC; un modelo de rezagos distribuidos de Koyck, y una descomposición STL con un modelo para cada componente. Los pronósticos de las 53 semanas de 2025, emitidos al cierre de 2024, se comparan con el precio observado mediante RMSE, MAE y MAPE, junto con dos pronósticos ingenuos.</p>
+  <h2>Precio y clima</h2>
+  <p>Cada precio semanal se compara con el clima del mismo estado de origen registrado en la semana que termina el miércoles anterior; así, el dato climático siempre precede al cierre de la semana del precio.</p>
+  <h2>Tiempo aproximado hasta la cosecha</h2>
+  <p>La ficha de cada cultivo en Precios resume publicaciones técnicas y académicas mexicanas (INIFAP, Colegio de Postgraduados y universidades), consultadas en noviembre de 2026; el reporte técnico no incluye estos plazos. Cada ficha indica dónde empieza y termina el intervalo (siembra, trasplante, injerto o floración; madurez del grano, cosecha, primer corte o inicio de producción), así como la variedad, la región y el manejo de su fuente, porque las cotizaciones del SNIIM no identifican la variedad. Es información de contexto, independiente de los precios y de los modelos. Para el maíz pozolero se usa como referencia el Cacahuacintle de los Valles Altos y para el tomate saladette, estudios en invernadero, porque no se encontraron plazos publicados para las regiones de origen de las cotizaciones.</p>
+  <h2>Umbrales térmicos</h2>
+  <ul>{% for u in umbrales %}<li>{{ u.descripcion }}</li>{% endfor %}</ul>
+</section>
+{% endblock %}

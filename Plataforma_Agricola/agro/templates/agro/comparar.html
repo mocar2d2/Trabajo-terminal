@@ -1,0 +1,65 @@
+{% extends "agro/base.html" %}
+{% load formato %}
+{% block titulo %}Precio y clima{% endblock %}
+{% block contenido %}
+<header class="seccion-encabezado">
+  <h1>Precio y clima del estado de origen</h1>
+  <p>Comparación semanal del precio de un producto con la temperatura o la precipitación registradas en su estado de origen.</p>
+</header>
+{% include "agro/_formulario.html" with form=form metodo="post" texto_boton="Comparar" accion="#resultado" %}
+{% if reporte %}
+<section id="resultado" class="resultado" aria-labelledby="t-resultado" tabindex="-1">
+  {% if sin_datos %}
+  <h2 id="t-resultado" class="visualmente-oculto">Resultado de la comparación</h2>
+  {% include "agro/_vacio.html" with mensaje=sin_datos %}
+  {% else %}
+  <h2 id="t-resultado">{{ seleccion.producto|producto_publico }} · {{ seleccion.estado }}</h2>
+  <dl class="tarjetas tarjetas--resumen">
+    <div class="tarjeta-dato tarjeta-dato--principal">
+      <dt class="tarjeta-dato__etiqueta">Precio más reciente</dt>
+      <dd class="tarjeta-dato__valor">{{ resumen.precio_reciente|floatformat:2 }} <span class="tarjeta-dato__unidad">{{ unidad }}</span></dd>
+      <dd class="tarjeta-dato__etiqueta">Semana al {{ resumen.fecha_reciente|fecha_larga }}</dd>
+    </div>
+    <div class="tarjeta-dato">
+      <dt class="tarjeta-dato__etiqueta">Mínimo del periodo</dt>
+      <dd class="tarjeta-dato__valor">{{ resumen.precio_min|floatformat:2 }} <span class="tarjeta-dato__unidad">{{ unidad }}</span></dd>
+      <dd class="tarjeta-dato__etiqueta">Semana al {{ resumen.fecha_min|fecha_larga }}</dd>
+    </div>
+    <div class="tarjeta-dato">
+      <dt class="tarjeta-dato__etiqueta">Máximo del periodo</dt>
+      <dd class="tarjeta-dato__valor">{{ resumen.precio_max|floatformat:2 }} <span class="tarjeta-dato__unidad">{{ unidad }}</span></dd>
+      <dd class="tarjeta-dato__etiqueta">Semana al {{ resumen.fecha_max|fecha_larga }}</dd>
+    </div>
+    <div class="tarjeta-dato">
+      <dt class="tarjeta-dato__etiqueta">Promedio del periodo</dt>
+      <dd class="tarjeta-dato__valor">{{ resumen.precio_promedio|floatformat:2 }} <span class="tarjeta-dato__unidad">{{ unidad }}</span></dd>
+      <dd class="tarjeta-dato__etiqueta">{{ resumen.semanas }} semana{{ resumen.semanas|pluralize }} comparada{{ resumen.semanas|pluralize }}</dd>
+    </div>
+  </dl>
+  <ul class="resumen-datos">
+    <li><span class="resumen-datos__clave">Periodo comparado:</span> del {{ resumen.desde|fecha_larga }} al {{ resumen.hasta|fecha_larga }}</li>
+    <li><span class="resumen-datos__clave">Unidad del precio:</span> {{ unidad }}{% if presentaciones %} ({{ presentaciones|join:", " }}){% endif %}</li>
+    <li><span class="resumen-datos__clave">Variable climática:</span> {{ meta.etiqueta }} ({{ meta.unidad }}){% if resumen.clima_reciente is not None %}; {{ resumen.clima_reciente|floatformat:1 }} {{ meta.unidad }} en la semana del precio más reciente{% endif %}</li>
+  </ul>
+  {% include "agro/_grafica.html" with id="fig-comp" figura=grafica etiqueta="Precio semanal y variable climática del estado de origen en el periodo comparado" %}
+  <p class="nota">Cada panel muestra todos los registros de su fuente en el periodo comparado, con su propia escala y unidad. Cada precio semanal se asocia con el clima de la semana que termina el miércoles anterior.</p>
+  {% include "agro/_discontinuidad.html" with huecos=huecos sombreado=True semanal=True linea="La línea del precio" %}
+  {% include "agro/_discontinuidad.html" with huecos=huecos_clima semanal=True linea="La serie climática" que=que_clima cero="un valor de cero" ceros="valores de cero" %}
+  <section aria-labelledby="t-union">
+    <h3 id="t-union">Cobertura de la comparación</h3>
+    <ul class="lista-control">
+      <li>Semanas con precio: <strong>{{ reporte.filas_precio }}</strong></li>
+      <li>Semanas con datos de clima: <strong>{{ reporte.filas_clima }}</strong></li>
+      <li>Semanas comparadas: <strong>{{ reporte.emparejadas }}</strong></li>
+      <li>Semanas con precio y sin datos de clima: <strong>{{ reporte.precio_sin_clima }}</strong></li>
+      <li>Semanas con datos de clima y sin precio: <strong>{{ reporte.clima_sin_precio }}</strong></li>
+    </ul>
+  </section>
+  {% endif %}
+</section>
+{% endif %}
+<details class="detalle detalle--secundario">
+  <summary>Productos y estados disponibles</summary>
+  <ul class="lista-control">{% for p, est in comparables.items %}<li><strong>{{ p|producto_publico }}:</strong> {{ est|join:", " }}</li>{% endfor %}</ul>
+</details>
+{% endblock %}

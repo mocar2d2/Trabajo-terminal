@@ -1,0 +1,39 @@
+Estado,Municipio,Cultivo,Produccion,Producto_SNIIM,Porcentaje_Nacional,Acumulado_Pct,Latitud,Longitud,Fuente_Coords,Dudosa,Motivo_Coords,ID_Estacion_Final,Opcion_K,Distancia_Km_Final,Cobertura_Final,Cobertura_Prueba,Motivo
+Michoacán,Tancítaro,Aguacate,2357975.0,Aguacate Hass - Primera,10.1807,10.1807,19.3544253,-102.3704938,semillas,False,,16228.0,3.0,23.32,1.0,1.0,asignada
+Michoacán,Tacámbaro,Aguacate,1886758.71,Aguacate Hass - Primera,8.1462,18.3269,19.2499715,-101.4519835,semillas,False,,16123.0,1.0,1.69,0.8258,0.7547,asignada
+Michoacán,Salvador Escalante,Aguacate,1872938.19,Aguacate Hass - Primera,8.0865,26.4135,19.3909617,-101.6637645,semillas,False,,,,,,,ninguna de sus 5 vecinas cumple la cobertura mínima
+Michoacán,Ario,Aguacate,1840158.96,Aguacate Hass - Primera,7.945,34.3585,19.12974,-101.7050018,semillas,False,,,,,,,ninguna de sus 5 vecinas cumple la cobertura mínima
+Michoacán,Uruapan,Aguacate,1784893.84,Aguacate Hass - Primera,7.7064,42.0649,19.4147269,-102.0522647,semillas,False,,,,,,,ninguna de sus 5 vecinas cumple la cobertura mínima
+Michoacán,Peribán,Aguacate,1404699.8,Aguacate Hass - Primera,6.0649,48.1297,19.4941114,-102.4560107,semillas,False,,,,,,,ninguna de sus 5 vecinas cumple la cobertura mínima
+Michoacán,Nuevo Parangaricutiro,Aguacate,832593.77,Aguacate Hass - Primera,3.5948,51.7245,19.3927622,-102.1838271,semillas,False,,,,,,,ninguna de sus 5 vecinas cumple la cobertura mínima
+Sinaloa,Culiacán,Tomate rojo (jitomate),2447367.14,Tomate Saladette - Primera,7.0616,7.0616,24.7978965,-107.393395,semillas,False,,25015.0,2.0,0.81,1.0,1.0,asignada
+Sinaloa,Navolato,Tomate rojo (jitomate),2060637.71,Tomate Saladette - Primera,5.9457,13.0073,24.7633,-107.6979734,semillas,False,,25171.0,1.0,0.57,0.9599,0.9245,asignada
+Baja California,Ensenada,Tomate rojo (jitomate),1099897.21,Tomate Saladette - Primera,3.1736,16.181,31.8658887,-116.602983,semillas,False,,,,,,,ninguna de sus 5 vecinas cumple la cobertura mínima
+Sinaloa,Elota,Tomate rojo (jitomate),1053689.72,Tomate Saladette - Primera,3.0403,19.2213,24.0308062,-106.8612365,semillas,False,,25050.0,2.0,13.71,0.9599,0.5849,asignada
+Baja California Sur,Mulegé,Tomate rojo (jitomate),1050280.25,Tomate Saladette - Primera,3.0305,22.2518,26.891329,-111.982641,semillas,False,,3103.0,3.0,31.64,0.8885,0.8113,asignada
+Sinaloa,Guasave,Tomate rojo (jitomate),667345.51,Tomate Saladette - Primera,1.9256,24.1773,25.5046381,-108.5399603,semillas,False,,25038.0,5.0,10.2,0.9843,0.9057,asignada
+Zacatecas,Fresnillo,Tomate rojo (jitomate),606751.77,Tomate Saladette - Primera,1.7507,25.928,23.1811278,-102.8729073,semillas,False,,32020.0,1.0,2.0,0.9007,1.0,asignada
+Michoacán,Tanhuato,Tomate rojo (jitomate),582217.76,Tomate Saladette - Primera,1.6799,27.6079,20.2721375,-102.3439198,semillas,False,,16141.0,3.0,9.65,0.9338,0.9057,asignada
+Querétaro,Colón,Tomate rojo (jitomate),517053.37,Tomate Saladette - Primera,1.4919,29.0998,20.7496727,-100.079663,semillas,False,,22026.0,1.0,5.36,0.9843,1.0,asignada
+Sinaloa,Escuinapa,Tomate rojo (jitomate),495400.86,Tomate Saladette - Primera,1.4294,30.5293,22.7195146,-105.702228,semillas,False,,25049.0,4.0,33.22,0.9094,0.5849,asignada
+San Luis Potosí,Villa de Guadalupe,Tomate rojo (jitomate),475040.4,Tomate Saladette - Primera,1.3707,31.8999,23.2759282,-100.7761203,semillas,False,,24145.0,3.0,18.64,0.8554,0.5094,asignada
+San Luis Potosí,Guadalcázar,Tomate rojo (jitomate),444130.68,Tomate Saladette - Primera,1.2815,33.1814,22.9009999,-100.2957141,semillas,False,,24164.0,5.0,40.52,0.9617,1.0,asignada
+San Luis Potosí,Vanegas,Tomate rojo (jitomate),426704.35,Tomate Saladette - Primera,1.2312,34.4126,24.1434856,-100.9481624,semillas,False,,24175.0,1.0,22.81,0.8868,0.7547,asignada
+San Luis Potosí,Moctezuma,Tomate rojo (jitomate),387949.91,Tomate Saladette - Primera,1.1194,35.532,22.7074274,-101.1441445,semillas,False,,24021.0,1.0,4.57,0.9774,0.7547,asignada
+San Luis Potosí,Catorce,Tomate rojo (jitomate),379764.95,Tomate Saladette - Primera,1.0958,36.6278,23.6439472,-101.0550621,semillas,False,,24165.0,1.0,15.77,0.8641,0.5094,asignada
+Chiapas,La Independencia,Tomate rojo (jitomate),365262.96,Tomate Saladette - Primera,1.0539,37.6817,16.2135717,-91.9054476,semillas,False,,,,,,,ninguna de sus 5 vecinas cumple la cobertura mínima
+Michoacán,Yurécuaro,Tomate rojo (jitomate),363454.2,Tomate Saladette - Primera,1.0487,38.7304,20.3352383,-102.2819992,semillas,False,,16141.0,1.0,0.27,0.9338,0.9057,asignada
+San Luis Potosí,Villa de Arista,Tomate rojo (jitomate),356428.3,Tomate Saladette - Primera,1.0284,39.7589,22.6684932,-100.7979896,semillas,False,,24164.0,4.0,24.01,0.9617,1.0,asignada
+Baja California Sur,La Paz,Tomate rojo (jitomate),347987.86000000004,Tomate Saladette - Primera,1.0041,40.7629,24.1619948,-110.3158532,semillas,False,,3011.0,4.0,11.33,0.9669,0.9811,asignada
+México,Jocotitlán,Tomate rojo (jitomate),329242.1,Tomate Saladette - Primera,0.95,41.7129,19.7158863,-99.7623175,semillas,False,,15390.0,1.0,2.83,1.0,1.0,asignada
+San Luis Potosí,Cedral,Tomate rojo (jitomate),322824.92,Tomate Saladette - Primera,0.9315,42.6444,23.9463868,-100.685418,semillas,False,,24007.0,1.0,21.6,0.9477,0.7547,asignada
+Sonora,Cajeme,Tomate rojo (jitomate),316035.61,Tomate Saladette - Primera,0.9119,43.5563,27.7119807,-109.9022075,semillas,False,,26043.0,1.0,0.23,1.0,1.0,asignada
+Jalisco,San Gabriel,Tomate rojo (jitomate),298405.16,Tomate Saladette - Primera,0.861,44.4173,19.703787,-103.7478804,semillas,False,,,,,,,ninguna de sus 5 vecinas cumple la cobertura mínima
+Coahuila,Viesca,Tomate rojo (jitomate),289019.82,Tomate Saladette - Primera,0.8339,45.2513,25.1900179,-102.8608673,semillas,False,,5041.0,1.0,15.25,0.9913,1.0,asignada
+Querétaro,Pedro Escobedo,Tomate rojo (jitomate),286858.25,Tomate Saladette - Primera,0.8277,46.0789,20.4688714,-100.1716263,semillas,False,,22067.0,1.0,2.53,0.946,1.0,asignada
+Sinaloa,Sinaloa,Tomate rojo (jitomate),283836.39,Tomate Saladette - Primera,0.819,46.8979,24.7879773,-107.373326,semillas,False,,25015.0,1.0,2.54,1.0,1.0,asignada
+Coahuila,Matamoros,Tomate rojo (jitomate),259168.43,Tomate Saladette - Primera,0.7478,47.6457,25.5731848,-103.1948691,semillas,False,,5053.0,1.0,6.05,0.9948,1.0,asignada
+Chiapas,La Trinitaria,Tomate rojo (jitomate),248638.97,Tomate Saladette - Primera,0.7174,48.3632,16.1206164,-92.0542431,semillas,False,,7025.0,3.0,15.11,0.9861,1.0,asignada
+Durango,Tlahualilo,Tomate rojo (jitomate),247687.96,Tomate Saladette - Primera,0.7147,49.0778,26.308393,-103.6037328,semillas,False,,10168.0,1.0,24.31,0.9756,0.8302,asignada
+Sonora,Hermosillo,Tomate rojo (jitomate),246393.35,Tomate Saladette - Primera,0.7109,49.7888,29.0948207,-110.9692202,semillas,False,,26139.0,1.0,1.53,0.9721,0.8868,asignada
+San Luis Potosí,Ciudad del Maíz,Tomate rojo (jitomate),240307.41,Tomate Saladette - Primera,0.6934,50.4821,22.4309305,-99.7047331,semillas,False,,24174.0,4.0,15.79,0.8641,1.0,asignada

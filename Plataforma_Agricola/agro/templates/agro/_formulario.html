@@ -1,0 +1,19 @@
+<form class="filtros" method="{{ metodo|default:'get' }}" action="{{ accion|default:'' }}" data-carga{% if disponibilidad %} data-disponibilidad="disponibilidad-filtros" autocomplete="off"{% endif %}>
+  {% if metodo == 'post' %}{% csrf_token %}{% endif %}
+  {% if form.non_field_errors and not errores_en_vacio %}<div class="mensaje mensaje--error" role="alert">{% for e in form.non_field_errors %}<p>{{ e }}</p>{% endfor %}</div>{% endif %}
+  <div class="filtros__campos">
+    {% for campo in form %}
+    <div class="campo{% if campo.errors %} campo--error{% endif %}"{% if campo.field.oculto %} hidden{% endif %}>
+      <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+      {{ campo }}
+      {% for e in campo.errors %}<p class="campo__error" role="alert">{{ e }}</p>{% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+  <div class="filtros__acciones">
+    <button type="submit" class="boton">{{ texto_boton|default:"Aplicar filtros" }}</button>
+    <span class="indicador" aria-live="polite"></span>
+    {% if disponibilidad %}<p class="filtros__sin-opciones" role="status" hidden>No hay combinaciones con datos para esta selección.</p>{% endif %}
+  </div>
+</form>
+{% if disponibilidad %}{{ disponibilidad|json_script:"disponibilidad-filtros" }}{% endif %}

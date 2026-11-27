@@ -1,0 +1,38 @@
+{% extends "agro/base.html" %}
+{% block titulo %}Sequía y temperatura{% endblock %}
+{% block contenido %}
+<header class="seccion-encabezado">
+  <h1>Sequía y temperatura</h1>
+  <p>Precipitación y temperatura por estado, comparadas con los umbrales térmicos de referencia para el maíz y el haba.</p>
+</header>
+{% include "agro/_formulario.html" with form=form %}
+{% if sin_datos %}{% include "agro/_vacio.html" with mensaje=sin_datos %}{% else %}
+<section aria-labelledby="t-graf">
+  <h2 id="t-graf">{{ estado }}: precipitación y temperatura</h2>
+  <p class="nota">Valores promedio de las estaciones del estado. La precipitación mensual y la anual corresponden a la suma de las semanas que terminan en cada periodo. En la vista semanal, las marcas rojizas sobre el eje señalan las semanas sin precipitación. Las líneas discontinuas son los umbrales de referencia; la leyenda indica el cultivo y la temperatura de cada una.{% if semanas_temp_faltante %} {{ semanas_temp_faltante }} semana{{ semanas_temp_faltante|pluralize }} no tiene{{ semanas_temp_faltante|pluralize:"n" }} registro de temperatura.{% endif %}</p>
+  {% include "agro/_vistas.html" with id="fig-sequia" etiqueta="Periodo de la precipitación" opciones=vistas_precip %}
+  {% include "agro/_grafica.html" with id="fig-sequia" figura=grafica etiqueta="Precipitación y temperaturas del estado" %}
+</section>
+<section aria-labelledby="t-conteo">
+  <h2 id="t-conteo">Semanas por año que cumplen cada umbral</h2>
+  <p class="nota">Las temperaturas son promedios semanales, mientras que los umbrales describen condiciones diarias en etapas sensibles del cultivo.</p>
+  <div class="tabla-envoltura" tabindex="0" role="region" aria-label="Tabla de semanas por año que cumplen cada umbral">
+    <table class="tabla">
+      <thead><tr><th scope="col">Año</th><th scope="col">Semanas</th><th scope="col">Semanas sin precipitación</th><th scope="col">Precipitación acumulada (mm)</th>{% for u in umbrales %}<th scope="col">{{ u.resumen }}</th>{% endfor %}</tr></thead>
+      <tbody>
+      {% for f in conteos %}
+      <tr><th scope="row">{{ f.anio }}</th><td>{{ f.semanas }}</td><td>{{ f.sin_precip }}</td><td>{{ f.precip_total|floatformat:1 }}</td>
+        {% for c in f.celdas %}<td>{{ c.conteo }} <span class="tabla__fecha">de {{ c.con_dato }}</span></td>{% endfor %}</tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+<section aria-labelledby="t-umbrales">
+  <h2 id="t-umbrales">Umbrales de referencia</h2>
+  <ul class="lista-umbrales">
+    {% for u in umbrales %}<li>{{ u.descripcion }}</li>{% endfor %}
+  </ul>
+</section>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "agro/base.html" %}
+{% load formato %}
+{% block titulo %}Precios{% endblock %}
+{% block contenido %}
+<header class="seccion-encabezado">
+  <h1>Precios mayoristas</h1>
+  <p>Evolución de los precios mayoristas de cada producto en la Central de Abasto de Iztapalapa, por estado de origen, presentación y periodo.</p>
+</header>
+{% include "agro/_formulario.html" with form=form %}
+{% if sin_datos %}{% include "agro/_vacio.html" with mensaje=sin_datos %}{% else %}
+<section aria-labelledby="t-resumen">
+  <h2 id="t-resumen">{{ producto|producto_publico }}: mínimos y máximos de la selección</h2>
+  <div class="tarjetas tarjetas--4">
+    <div class="tarjeta-dato"><span class="tarjeta-dato__valor">${{ resumen.frec_min.valor|floatformat:2 }}</span><span class="tarjeta-dato__etiqueta">Precio frecuente más bajo<br>{{ resumen.frec_min.fecha|fecha_larga }}</span></div>
+    <div class="tarjeta-dato"><span class="tarjeta-dato__valor">${{ resumen.frec_max.valor|floatformat:2 }}</span><span class="tarjeta-dato__etiqueta">Precio frecuente más alto<br>{{ resumen.frec_max.fecha|fecha_larga }}</span></div>
+    <div class="tarjeta-dato"><span class="tarjeta-dato__valor">{% if resumen.precio_min_min %}${{ resumen.precio_min_min.valor|floatformat:2 }}{% else %}—{% endif %}</span><span class="tarjeta-dato__etiqueta">Precio mínimo más bajo<br>{% if resumen.precio_min_min %}{{ resumen.precio_min_min.fecha|fecha_larga }}{% else %}No reportado{% endif %}</span></div>
+    <div class="tarjeta-dato"><span class="tarjeta-dato__valor">{% if resumen.precio_max_max %}${{ resumen.precio_max_max.valor|floatformat:2 }}{% else %}—{% endif %}</span><span class="tarjeta-dato__etiqueta">Precio máximo más alto<br>{% if resumen.precio_max_max %}{{ resumen.precio_max_max.fecha|fecha_larga }}{% endif %}{% if nota_rango.rango_no_confiable %}<br>Menor que el precio frecuente; no indica un rango{% endif %}</span></div>
+  </div>
+  <p class="nota">Unidad: {{ unidad }}. Periodo: del {{ resumen.desde|fecha_larga }} al {{ resumen.hasta|fecha_larga }}, con {{ resumen.registros|cifra }} cotizaciones.</p>
+  {% if nota_rango %}<div class="mensaje mensaje--info" role="note">
+    <p>{{ nota_rango.resumen }}</p>
+    <details class="detalle detalle--compacto"><summary>Detalle técnico</summary><p>{{ nota_rango.detalle }}</p></details>
+  </div>{% endif %}
+</section>
+{% include "agro/_ciclo.html" with ciclo=ciclo %}
+<section aria-labelledby="t-grafica">
+  <h2 id="t-grafica">Evolución del precio</h2>
+  <p class="nota">Cotizaciones registradas en {{ unidad }}. La línea se interrumpe cuando transcurre al menos una semana sin cotizaciones.</p>
+  {% include "agro/_grafica.html" with id="fig-precios" figura=grafica etiqueta="Gráfica de la evolución del precio del producto seleccionado" %}
+  {% include "agro/_discontinuidad.html" with huecos=huecos sombreado=huecos_sombreados %}
+</section>
+<section aria-labelledby="t-anual">
+  <h2 id="t-anual">Resumen por año</h2>
+  <div class="tabla-envoltura" tabindex="0" role="region" aria-label="Tabla de precios por año">
+    <table class="tabla">
+      <caption class="visualmente-oculto">Precios por año de {{ producto|producto_publico }}</caption>
+      <thead><tr><th scope="col">Año</th><th scope="col">Cotizaciones</th><th scope="col">Precio frecuente mínimo</th><th scope="col">Precio frecuente promedio</th><th scope="col">Precio frecuente máximo</th><th scope="col">Precio mínimo más bajo</th><th scope="col">Precio máximo más alto</th></tr></thead>
+      <tbody>
+      {% for f in tabla_anual %}
+      <tr><th scope="row">{{ f.anio }}</th><td>{{ f.registros }}</td><td>{{ f.frec_min|floatformat:2|default:"—" }}</td><td>{{ f.frec_promedio|floatformat:2|default:"—" }}</td><td>{{ f.frec_max|floatformat:2|default:"—" }}</td><td>{{ f.precio_min_min|floatformat:2|default:"—" }}</td><td>{{ f.precio_max_max|floatformat:2|default:"—" }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+<section aria-labelledby="t-cultivos">
+  <h2 id="t-cultivos">Precios mínimos y máximos por cultivo</h2>
+  <form class="filtros filtros--compacto" method="get" action="">
+    {% if producto %}<input type="hidden" name="producto" value="{{ producto }}">{% endif %}
+    <div class="campo"><label for="anio_tabla">Año</label>
+      <select id="anio_tabla" name="anio_tabla" class="control">
+        <option value="">Todo el periodo</option>
+        {% for a in tabla_cultivos.anios %}<option value="{{ a }}"{% if tabla_cultivos.anio == a|stringformat:"s" %} selected{% endif %}>{{ a }}</option>{% endfor %}
+      </select></div>
+    <button type="submit" class="boton boton--secundario">Actualizar tabla</button>
+  </form>
+  {% if tabla_cultivos.filas %}
+  <div class="tabla-envoltura" tabindex="0" role="region" aria-label="Tabla de precios mínimos y máximos por cultivo">
+    <table class="tabla">
+      <caption class="visualmente-oculto">Precios mínimos y máximos por cultivo y producto</caption>
+      <thead><tr><th scope="col">Cultivo</th><th scope="col">Producto</th><th scope="col">Precio frecuente mínimo</th><th scope="col">Precio frecuente máximo</th><th scope="col">Precio frecuente promedio</th><th scope="col">Cotizaciones</th><th scope="col">Unidad</th></tr></thead>
+      <tbody>
+      {% for f in tabla_cultivos.filas %}
+      <tr><th scope="row">{{ f.cultivo }}</th><td>{{ f.producto|producto_publico }}</td><td>{{ f.frec_min.valor|floatformat:2 }} <span class="tabla__fecha">{{ f.frec_min.fecha|fecha_larga }}</span></td><td>{{ f.frec_max.valor|floatformat:2 }} <span class="tabla__fecha">{{ f.frec_max.fecha|fecha_larga }}</span></td><td>{{ f.frec_promedio|floatformat:2 }}</td><td>{{ f.registros|cifra }}</td><td>{{ f.unidad }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}{% include "agro/_vacio.html" with mensaje="No hay información disponible para la selección actual. Seleccione otro año." %}{% endif %}
+</section>
+{% endblock %}
