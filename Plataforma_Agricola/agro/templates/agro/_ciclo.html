@@ -1,0 +1,16 @@
+{% comment %}Ficha contextual del cultivo seleccionado (configuracion.CICLO_CULTIVO). No depende de Internet.{% endcomment %}
+{% if ciclo %}
+<section class="ficha-ciclo" aria-labelledby="t-ciclo">
+  <h2 id="t-ciclo" class="ficha-ciclo__titulo">Tiempo aproximado hasta la cosecha</h2>
+  {% if ciclo.sin_referencia %}
+  <p class="nota">{{ ciclo.sin_referencia }}</p>
+  {% else %}
+  <dl class="ficha-ciclo__etapas">
+    {% for tramo, valor in ciclo.etapas %}<div class="ficha-ciclo__etapa"><dt>{{ tramo }}</dt><dd>{{ valor }}</dd></div>{% endfor %}
+  </dl>
+  <p class="nota">{{ ciclo.contexto }}</p>
+  <p class="nota">El tiempo puede variar según la variedad, el clima, el riego y el manejo del cultivo. Es una referencia general, no una fecha para una parcela en particular ni un resultado de los modelos de precios.</p>
+  <p class="ficha-ciclo__fuente">Fuente{{ ciclo.referencias|length|pluralize:"s" }}: {% for r in ciclo.referencias %}<a href="{{ r.url }}" rel="noopener noreferrer">{{ r.texto }}</a>{% if not forloop.last %}; {% endif %}{% endfor %}</p>
+  {% endif %}
+</section>
+{% endif %}

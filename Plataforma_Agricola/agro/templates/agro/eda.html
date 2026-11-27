@@ -1,0 +1,35 @@
+{% extends "agro/base.html" %}
+{% load formato %}
+{% block titulo %}Análisis por año y mes{% endblock %}
+{% block contenido %}
+<header class="seccion-encabezado">
+  <h1>Análisis por año y mes</h1>
+  <p>Variación del precio semanal de cada producto a lo largo del año y entre un año y otro.</p>
+</header>
+{% include "agro/_formulario.html" with form=form %}
+{% if sin_datos %}{% include "agro/_vacio.html" with mensaje=sin_datos %}{% else %}
+<div class="tarjetas tarjetas--4">
+  <div class="tarjeta-dato"><span class="tarjeta-dato__valor">{{ semanas }}</span><span class="tarjeta-dato__etiqueta">semanas con cotización, del {{ desde|fecha_larga }} al {{ hasta|fecha_larga }}</span></div>
+  <div class="tarjeta-dato"><span class="tarjeta-dato__valor">${{ promedio|floatformat:2 }}</span><span class="tarjeta-dato__etiqueta">promedio semanal</span></div>
+  <div class="tarjeta-dato"><span class="tarjeta-dato__valor">${{ minimo|floatformat:2 }}</span><span class="tarjeta-dato__etiqueta">precio semanal más bajo<br>{{ fecha_minimo|fecha_larga }}</span></div>
+  <div class="tarjeta-dato"><span class="tarjeta-dato__valor">${{ maximo|floatformat:2 }}</span><span class="tarjeta-dato__etiqueta">precio semanal más alto<br>{{ fecha_maximo|fecha_larga }}</span></div>
+</div>
+<p class="nota">Unidad: {{ unidad }}. Los cálculos consideran únicamente las semanas con cotización; cada semana se agrupa en el año y el mes de su cierre (domingo).{% if semana_final %} La última semana de la serie, con cierre el {{ semana_final.cierre|fecha_larga }}, solo contiene cotizaciones {% if semana_final.desde == semana_final.hasta %}del {{ semana_final.hasta|fecha_larga }}{% else %}del {{ semana_final.desde|fecha_larga }} al {{ semana_final.hasta|fecha_larga }}{% endif %}, por lo que se agrupa en {{ semana_final.hasta|mes_anio }}.{% endif %}</p>
+<section aria-labelledby="t-mes">
+  <h2 id="t-mes">Distribución por mes</h2>
+  <p class="nota">Cada caja resume los precios semanales del mes en el periodo seleccionado. La línea central indica la mediana, y la caja contiene la mitad central de los valores. Los puntos señalan valores atípicos.</p>
+  {% include "agro/_grafica.html" with id="fig-caja" figura=grafica_caja etiqueta="Diagrama de caja del precio semanal por mes" %}
+</section>
+<section aria-labelledby="t-matriz">
+  <h2 id="t-matriz">Precio promedio por año y mes</h2>
+  <p class="nota">Colores más oscuros indican precios más altos. Las celdas vacías corresponden a meses sin cotización.</p>
+  {% include "agro/_grafica.html" with id="fig-matriz" figura=grafica_matriz etiqueta="Mapa de calor del precio promedio por año y mes" %}
+</section>
+<section aria-labelledby="t-anual">
+  <h2 id="t-anual">Promedio por periodo</h2>
+  <p class="nota">Promedio de los precios semanales de cada año o mes.</p>
+  {% include "agro/_vistas.html" with id="fig-anual" etiqueta="Periodo de agregación" opciones=vistas_promedio %}
+  {% include "agro/_grafica.html" with id="fig-anual" figura=grafica_anual etiqueta="Gráfica de barras del precio promedio anual o mensual" %}
+</section>
+{% endif %}
+{% endblock %}

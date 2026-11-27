@@ -1,0 +1,116 @@
+{
+  "algoritmo": "SHA-256",
+  "registrado": "2026-10-04",
+  "archivos": {
+    "Clima_Municipios_Top50_Semanal_v1.csv": {
+      "sha256": "10cc11aee85844b6ca6b0538a769b1d65a34a37f9e2e7f705e2dbe4791b6e3db",
+      "bytes": 1648068
+    },
+    "Precios_Historicos_SNIIM_Continuo.csv": {
+      "sha256": "86e23cd731750254fe119c449fed78085f316e8876a268541150271169db8589",
+      "bytes": 989979
+    },
+    "Reporte_Tecnico.pdf": {
+      "sha256": "3f7334f6955085aa014d14cc92e2c81954687ffd81549fdab6cf66561ca19b1a",
+      "bytes": 2331151,
+      "ruta": "data/raw/Reporte_Tecnico.pdf",
+      "registrado": "2026-10-05"
+    },
+    "Analisis_Precios_SNIIM_vf.ipynb": {
+      "sha256": "4558bae4c84ced4f29ba764b1614a00e5ad192d7480055a68335cc397a7ecea6",
+      "bytes": 5805177,
+      "ruta": "data/raw/Analisis_Precios_SNIIM_vf.ipynb",
+      "registrado": "2026-11-08"
+    },
+    "main-04-11-26.pdf": {
+      "sha256": "7cee44a27530c657833b89ac7583523cb412e25e43590531e4012268a71f0ec3",
+      "bytes": 7700803,
+      "ruta": "data/raw/main-04-11-26.pdf",
+      "registrado": "2026-11-08"
+    },
+    "Clima_Municipios_Top50_Semanal_v2.csv": {
+      "sha256": "d3f4e663b424e01b4a7d1a52704e6a0a42477bb59ba11a083b583a2b936050e2",
+      "bytes": 1833492,
+      "ruta": "data/raw/Clima_Municipios_Top50_Semanal_v2.csv",
+      "registrado": "2026-11-08"
+    },
+    "Asignacion_Espacial_Validada_k5_v2.csv": {
+      "sha256": "d4d9f26e0dbc5f648c3f9928d87ee9c23abebc9e0d02b05a2fff71fc975629cf",
+      "bytes": 15490,
+      "ruta": "data/raw/Asignacion_Espacial_Validada_k5_v2.csv",
+      "registrado": "2026-11-08"
+    },
+    "Clima_Hortalizas_Top50_Semanal_v2.csv": {
+      "sha256": "d9b9329b2395a9e6c3568bc700e156daa7dd758a64ba55880d27e7807da4906f",
+      "bytes": 693588,
+      "ruta": "data/raw/Clima_Hortalizas_Top50_Semanal_v2.csv",
+      "registrado": "2026-11-08"
+    },
+    "Asignacion_Hortalizas_k5_v2.csv": {
+      "sha256": "ac2262e2822cfc69f1bc4a2a3257e42ca64b5d58db06131c67489d7c6d3864b1",
+      "bytes": 6968,
+      "ruta": "data/raw/Asignacion_Hortalizas_k5_v2.csv",
+      "registrado": "2026-11-08"
+    },
+    "Cierre_agricola_mun_2015.csv": {
+      "sha256": "24995b43f4e6bd25959867d5e6ac633da5e01474e5436972eeb4e581f322594b",
+      "bytes": 5943877,
+      "ruta": "data/raw/Cierre_agricola_mun_2015.csv",
+      "registrado": "2026-11-08"
+    },
+    "Cierre_agricola_mun_2016.csv": {
+      "sha256": "bdd6fc80534f9100d1637c32f7db43f71004127edb5c692e64aecd3b89a7eb7a",
+      "bytes": 5875278,
+      "ruta": "data/raw/Cierre_agricola_mun_2016.csv",
+      "registrado": "2026-11-08"
+    },
+    "Cierre_agricola_mun_2017.csv": {
+      "sha256": "ec9ab47d3b40e063ab3a3a7571197e3ce7fd58b522dc096f26bb0dea239ace22",
+      "bytes": 5884738,
+      "ruta": "data/raw/Cierre_agricola_mun_2017.csv",
+      "registrado": "2026-11-08"
+    },
+    "Cierre_agricola_mun_2018.csv": {
+      "sha256": "9af11d1d342ad2cb632cdc004cca7cbf62ae20026c52254c352eec8cdb1babd5",
+      "bytes": 5863477,
+      "ruta": "data/raw/Cierre_agricola_mun_2018.csv",
+      "registrado": "2026-11-08"
+    },
+    "Cierre_agricola_mun_2019.csv": {
+      "sha256": "f6a01472287c65bc50d237d7edcbaf4400c4439d3c3389f93bd40bf8c74fbf98",
+      "bytes": 5911711,
+      "ruta": "data/raw/Cierre_agricola_mun_2019.csv",
+      "registrado": "2026-11-08"
+    },
+    "Cierre_agricola_mun_2020.csv": {
+      "sha256": "ebf3f12a5ec4fa5a65d2f0d87158da0528280c51b6035e6bc1eb5e96cf4c4304",
+      "bytes": 4635574,
+      "ruta": "data/raw/Cierre_agricola_mun_2020.csv",
+      "registrado": "2026-11-08"
+    },
+    "Cierre_agricola_mun_2021.csv": {
+      "sha256": "1f03b2f405c18ea00b63766f9732c7ed2f944b589e815ba6492c723e9b2cb65b",
+      "bytes": 4649328,
+      "ruta": "data/raw/Cierre_agricola_mun_2021.csv",
+      "registrado": "2026-11-08"
+    },
+    "Cierre_agricola_mun_2022.csv": {
+      "sha256": "745f5189592446aa4348ffeba2780fd858f7071aef8dfd338414abbf2bc46162",
+      "bytes": 6032570,
+      "ruta": "data/raw/Cierre_agricola_mun_2022.csv",
+      "registrado": "2026-11-08"
+    },
+    "Cierre_agricola_mun_2023.csv": {
+      "sha256": "30b3e90714d646821a6320645681b18e8e8fdbba8b88f59d4b5904b23acf4bf6",
+      "bytes": 6678816,
+      "ruta": "data/raw/Cierre_agricola_mun_2023.csv",
+      "registrado": "2026-11-08"
+    },
+    "Cierre_agricola_mun_2024.csv": {
+      "sha256": "4816ab07385c516d0466a86dc45e0160daf4db9df6bd0724fbd024e4ee41035f",
+      "bytes": 6655713,
+      "ruta": "data/raw/Cierre_agricola_mun_2024.csv",
+      "registrado": "2026-11-08"
+    }
+  }
+}

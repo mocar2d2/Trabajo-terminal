@@ -1,0 +1,36 @@
+# Configuración local y secretos (no se entregan ni se versionan)
+.env
+
+# Entornos y cachés de Python (se recrean con instalar.ps1)
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Artefactos regenerados al iniciar (collectstatic y copia local de Plotly.js)
+staticfiles/
+static_vendor/
+requirements.lock.txt
+*.sqlite3-journal
+
+# Ejecución local (procesos, URL activa) y registros
+logs/
+run/
+*.log
+*.pid
+*.tmp
+
+# Editores y sistema operativo
+.idea/
+.vscode/
+*.swp
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Se conservan a propósito: data/raw (insumos), data/derivados (resultados del modelado)
+# y data/processed (base SQLite con los datos validados), necesarios para usar la
+# plataforma sin repetir el análisis.

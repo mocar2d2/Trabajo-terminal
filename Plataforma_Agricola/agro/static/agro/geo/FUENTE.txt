@@ -1,0 +1,21 @@
+mexico_estados.geojson
+
+Límites de las 32 entidades federativas de México (más el Arrecife Alacranes, sin nombre en la
+fuente) tomados de Natural Earth, "Admin 1 – States, Provinces", escala 1:10 m, versión 5.2.0-pre
+(https://www.naturalearthdata.com/; repositorio nvkelso/natural-earth-vector, archivo
+geojson/ne_10m_admin_1_states_provinces.geojson).
+
+Licencia: dominio público. "All versions of Natural Earth raster + vector map data found on this
+website are in the public domain. You may use the maps in any manner, including modifying the
+content and design, electronic dissemination, and offset printing."
+(https://www.naturalearthdata.com/about/terms-of-use/)
+
+Transformaciones aplicadas para la interfaz web (sin agregar ni inventar límites):
+- Solo las entidades con adm0_a3 = MEX.
+- Simplificación geométrica con tolerancia de 0.003 grados (Shapely, preserve_topology=True)
+  y coordenadas redondeadas a 4 decimales.
+- Propiedad "nombre" igual al nombre de la fuente, salvo "Distrito Federal", que se rotula
+  "Ciudad de México" (denominación oficial vigente desde 2016) para coincidir con los datos
+  climáticos. Se conserva la clave ISO 3166-2 de la fuente.
+
+Uso: capa de referencia territorial de los mapas de la sección Clima; funciona sin Internet.

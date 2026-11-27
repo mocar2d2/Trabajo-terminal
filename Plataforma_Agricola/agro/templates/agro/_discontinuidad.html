@@ -1,0 +1,18 @@
+{% load formato %}{% comment %}
+Nota de tramos sin registros. Parámetros: huecos (desde = última fecha con dato antes del tramo,
+hasta = siguiente fecha con dato, semanas = semanas completas sin registros), sombreado,
+semanal (las fechas son cierres de semana), que (qué falta; por defecto, cotizaciones),
+linea (sujeto; por defecto, «La línea») y cero / ceros (lo que el tramo no representa).
+{% endcomment %}{% if huecos %}<div class="nota nota--discontinuidad" role="note">
+  {% if huecos|length == 1 %}{% with h=huecos.0 %}<p>{{ linea|default:"La línea" }}{% if h.serie %} de {{ h.serie }}{% endif %} se interrumpe porque no hay {{ que|default:"cotizaciones" }} entre {% if semanal %}la semana con cierre el {{ h.desde|fecha_larga }} y la del {{ h.hasta|fecha_larga }}{% else %}el {{ h.desde|fecha_larga }} y el {{ h.hasta|fecha_larga }}{% endif %}, un tramo{% if sombreado %} sombreado{% endif %} de {{ h.semanas }} semanas completas que no representa {{ cero|default:"un precio de cero" }}.</p>{% endwith %}
+  {% else %}<p>{% if huecos.0.serie %}Las líneas se interrumpen{% else %}{{ linea|default:"La línea" }} se interrumpe{% endif %} en {{ huecos|length }} tramos de {{ hueco_min_semanas }} semanas o más sin {{ que|default:"cotizaciones" }}{% if sombreado %}, sombreados en la gráfica{% endif %}; esos tramos no representan {{ ceros|default:"precios de cero" }}.</p>
+  <details class="detalle detalle--compacto">
+    <summary>Tramos sin {{ que|default:"cotizaciones" }}</summary>
+    <div class="tabla-envoltura" tabindex="0" role="region" aria-label="Tramos sin {{ que|default:'cotizaciones' }}">
+      <table class="tabla tabla--compacta">
+        <thead><tr>{% if huecos.0.serie %}<th scope="col">Serie</th>{% endif %}<th scope="col">{% if semanal %}Última semana con dato (cierre){% else %}Último registro{% endif %}</th><th scope="col">{% if semanal %}Siguiente semana con dato (cierre){% else %}Siguiente registro{% endif %}</th><th scope="col">Semanas completas sin registros</th></tr></thead>
+        <tbody>{% for h in huecos %}<tr>{% if h.serie %}<th scope="row">{{ h.serie }}</th>{% endif %}<td>{{ h.desde|fecha_larga }}</td><td>{{ h.hasta|fecha_larga }}</td><td>{{ h.semanas }}</td></tr>{% endfor %}</tbody>
+      </table>
+    </div>
+  </details>{% endif %}
+</div>{% endif %}

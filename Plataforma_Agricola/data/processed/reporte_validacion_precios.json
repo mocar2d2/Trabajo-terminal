@@ -1,0 +1,124 @@
+{
+  "archivo": "Precios_Historicos_SNIIM_Continuo.csv",
+  "errores": [],
+  "advertencias": [
+    "636 filas sin fecha ni precio: semanas sin cotización registradas en la fuente.",
+    "Aguacate Hass - Primera: en el 100 % de los registros 'Precio Frec' es mayor que 'Precio Max' y 'Precio Mín' está vacío en 2690 registros. Posible desplazamiento de columnas en la fuente; se conservan los valores originales."
+  ],
+  "codificacion": {
+    "utf8_valido": true,
+    "bom_utf8": true
+  },
+  "filas": 11447,
+  "columnas": [
+    "Fecha",
+    "Origen",
+    "Precio Mín",
+    "Precio Max",
+    "Precio Frec",
+    "Producto_Buscado",
+    "Categoria",
+    "Año",
+    "Mes",
+    "Semana",
+    "Presentación",
+    "Origen_Estado"
+  ],
+  "filas_sin_fecha": 636,
+  "filas_con_precio_sin_fecha": 0,
+  "fecha_min": "2015-01-02",
+  "fecha_max": "2025-12-31",
+  "fechas_invalidas_si_mes_dia": 6625,
+  "productos": {
+    "Tomate Saladette - Primera": 5946,
+    "Aguacate Hass - Primera": 2690,
+    "Haba": 574,
+    "Frijol Pinto": 573,
+    "Maíz blanco": 570,
+    "Maíz blanco pozolero": 565,
+    "Frijol Negro": 529
+  },
+  "categorias": {
+    "hortalizas": 8636,
+    "granos": 2811
+  },
+  "anio_no_coincide": 0,
+  "mes_no_coincide": 0,
+  "duplicados_llave": 0,
+  "llave_candidata": [
+    "Fecha",
+    "Producto_Buscado",
+    "Origen",
+    "Origen_Estado",
+    "Presentación"
+  ],
+  "coherencia_precios": {
+    "Aguacate Hass - Primera": {
+      "min_mayor_max": 0,
+      "frec_mayor_max": 2690,
+      "frec_menor_min": 0,
+      "precio_min_vacio": 2690,
+      "registros_con_precio": 2690
+    },
+    "Frijol Negro": {
+      "min_mayor_max": 0,
+      "frec_mayor_max": 0,
+      "frec_menor_min": 0,
+      "precio_min_vacio": 0,
+      "registros_con_precio": 91
+    },
+    "Frijol Pinto": {
+      "min_mayor_max": 0,
+      "frec_mayor_max": 0,
+      "frec_menor_min": 0,
+      "precio_min_vacio": 0,
+      "registros_con_precio": 555
+    },
+    "Haba": {
+      "min_mayor_max": 0,
+      "frec_mayor_max": 0,
+      "frec_menor_min": 0,
+      "precio_min_vacio": 0,
+      "registros_con_precio": 556
+    },
+    "Maíz blanco": {
+      "min_mayor_max": 0,
+      "frec_mayor_max": 0,
+      "frec_menor_min": 0,
+      "precio_min_vacio": 0,
+      "registros_con_precio": 552
+    },
+    "Maíz blanco pozolero": {
+      "min_mayor_max": 0,
+      "frec_mayor_max": 0,
+      "frec_menor_min": 0,
+      "precio_min_vacio": 0,
+      "registros_con_precio": 421
+    },
+    "Tomate Saladette - Primera": {
+      "min_mayor_max": 0,
+      "frec_mayor_max": 0,
+      "frec_menor_min": 0,
+      "precio_min_vacio": 0,
+      "registros_con_precio": 5946
+    }
+  },
+  "nulos": {
+    "Fecha": 636,
+    "Origen": 9272,
+    "Precio Mín": 3326,
+    "Precio Max": 636,
+    "Precio Frec": 636,
+    "Producto_Buscado": 0,
+    "Categoria": 0,
+    "Año": 0,
+    "Mes": 8636,
+    "Semana": 8636,
+    "Presentación": 2811,
+    "Origen_Estado": 2811
+  },
+  "dias_semana_granos": {
+    "2": 2131,
+    "1": 44
+  }
+}

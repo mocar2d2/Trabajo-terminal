@@ -1,0 +1,5 @@
+{% extends "agro/base.html" %}
+{% block titulo %}Error {{ codigo }}{% endblock %}
+{% block contenido %}
+<div class="estado-vacio"><h1>Error {{ codigo }}</h1><p>{{ mensaje }}</p><p><a class="boton" href="{% url 'agro:inicio' %}">Volver al inicio</a></p></div>
+{% endblock %}

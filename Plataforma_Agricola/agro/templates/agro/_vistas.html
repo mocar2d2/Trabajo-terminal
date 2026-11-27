@@ -1,0 +1,3 @@
+<div class="vistas" role="group" aria-label="{{ etiqueta }}" data-para="{{ id }}">
+  {% for clave, texto in opciones %}<button type="button" class="vistas__boton" data-vista="{{ clave }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">{{ texto }}</button>{% endfor %}
+</div>

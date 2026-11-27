@@ -1,0 +1,97 @@
+{% extends "agro/base.html" %}
+{% load formato %}
+{% block titulo %}Series y pronóstico{% endblock %}
+{% block contenido %}
+<header class="seccion-encabezado">
+  <h1>Series y pronóstico</h1>
+  <p>Serie semanal de precios de cada producto, su comportamiento histórico (tendencia, patrones de temporada y variaciones) y la evaluación de los modelos de pronóstico con los precios de 2025.</p>
+</header>
+{% include "agro/_formulario.html" with form=form %}
+{% if sin_datos %}{% include "agro/_vacio.html" with mensaje=sin_datos %}{% else %}
+<section aria-labelledby="t-serie">
+  <h2 id="t-serie">{{ producto|producto_publico }}: serie semanal</h2>
+  <div class="tarjetas tarjetas--4">
+    <div class="tarjeta-dato"><span class="tarjeta-dato__valor">{{ semanas }}</span><span class="tarjeta-dato__etiqueta">semanas, del {{ desde|fecha_larga }} al {{ hasta|fecha_larga }}</span></div>
+    <div class="tarjeta-dato"><span class="tarjeta-dato__valor">{{ semanas_con_dato }}</span><span class="tarjeta-dato__etiqueta">semanas con cotización</span></div>
+    <div class="tarjeta-dato{% if resultado.pct_faltantes > umbral_faltantes %} tarjeta-dato--alerta{% endif %}"><span class="tarjeta-dato__valor">{{ resultado.pct_faltantes|floatformat:2 }} %</span><span class="tarjeta-dato__etiqueta">semanas sin cotización{% if resultado.pct_faltantes > umbral_faltantes %}<br>supera el máximo de {{ umbral_faltantes|floatformat:0 }} % recomendado para el modelado{% endif %}</span></div>
+    <div class="tarjeta-dato"><span class="tarjeta-dato__valor">{% if resultado.descomposicion %}Sí{% else %}No{% endif %}</span><span class="tarjeta-dato__etiqueta">análisis de tendencia y temporada</span></div>
+  </div>
+  <p class="nota">Promedio semanal del precio frecuente. {% if resultado.por_origen|length > 1 %}Cuando el producto proviene de varios estados, las series se armonizan mediante su diferencia promedio; las líneas tenues corresponden a cada origen. {% endif %}Unidad: {{ unidad }}.</p>
+  {% include "agro/_grafica.html" with id="fig-serie" figura=grafica_serie etiqueta="Serie semanal de precios del producto" %}
+  {% if cobertura_origenes %}<p class="nota">La serie semanal promedia las cotizaciones disponibles en cada semana, sin ajuste de nivel entre orígenes, por lo que su origen cambia a lo largo del periodo: {% for o in cobertura_origenes %}{{ o.origen }}, del {{ o.desde|fecha_larga }} al {{ o.hasta|fecha_larga }} ({{ o.registros }} cotizaciones){% if not forloop.last %}; {% else %}.{% endif %}{% endfor %}</p>{% endif %}
+  {% include "agro/_discontinuidad.html" with huecos=huecos sombreado=True semanal=True %}
+  {% if avisos_serie %}<div class="mensaje mensaje--aviso" role="note">{% for a in avisos_serie %}<p>{{ a }}</p>{% endfor %}</div>{% endif %}
+</section>
+{% if modelo %}
+<section aria-labelledby="t-val">
+  <h2 id="t-val">Validación del pronóstico en {{ prueba_desde|slice:":4" }}</h2>
+  <p class="nota">Los modelos se estimaron con las semanas de 2015 a 2024 y pronosticaron, desde el cierre de 2024, las {{ prueba_semanas }} semanas que terminan entre el {{ prueba_desde|fecha_larga }} y el {{ prueba_hasta|fecha_larga }}. Las métricas comparan esos pronósticos con las {{ prueba_con_dato }} semanas con cotización real. Es una validación fuera de muestra: no incluye pronósticos posteriores a {{ prueba_hasta|mes_anio }}.</p>
+  <div class="tarjetas tarjetas--4">
+    <div class="tarjeta-dato"><span class="tarjeta-dato__valor">{{ modelo_mejor }}</span><span class="tarjeta-dato__etiqueta">menor error (RMSE {{ modelo_rmse_mejor|floatformat:2 }} {{ unidad }})</span></div>
+    {% if modelo.con_clima %}<div class="tarjeta-dato"><span class="tarjeta-dato__valor">{{ modelo_rmse_sarimax|floatformat:2 }}</span><span class="tarjeta-dato__etiqueta">RMSE del SARIMAX ({{ unidad }})</span></div>{% endif %}
+    <div class="tarjeta-dato"><span class="tarjeta-dato__valor">{{ modelo_rmse_sarima|floatformat:2 }}</span><span class="tarjeta-dato__etiqueta">RMSE del SARIMA sin clima ({{ unidad }})</span></div>
+    {% if modelo.parametros.rezago is not None %}<div class="tarjeta-dato"><span class="tarjeta-dato__valor">{{ modelo.parametros.rezago }}</span><span class="tarjeta-dato__etiqueta">semanas de rezago del clima en el SARIMAX</span></div>{% endif %}
+  </div>
+  <div class="controles-grafica" data-controles="fig-validacion">
+    <div class="campo controles-grafica__modelo">
+      <label for="sel-modelos">Modelos mostrados</label>
+      <select id="sel-modelos" class="control" data-modelos>
+        <option value="inicial" selected>Principales y de menor error</option>
+        <option value="todos">Todos los modelos</option>
+        {% for m in modelos_validacion %}<option value="{{ m }}">{{ m }}{% if m == modelo_mejor %} (menor error){% endif %}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="vistas" role="group" aria-label="Periodo de la gráfica">
+      <button type="button" class="vistas__boton" data-rango="evaluacion" aria-pressed="true">Evaluación {{ prueba_desde|slice:":4" }}</button><button type="button" class="vistas__boton" data-rango="historico" aria-pressed="false">Serie completa</button>
+    </div>
+    <div class="vistas" role="group" aria-label="Acercamiento de la gráfica">
+      <button type="button" class="vistas__boton" data-zoom="0.5">Acercar</button><button type="button" class="vistas__boton" data-zoom="2">Alejar</button>
+    </div>
+  </div>
+  <p class="nota">Precio semanal de jueves a miércoles, en {{ unidad }}. Línea continua con puntos: precio observado; líneas discontinuas: pronósticos de {{ prueba_desde|slice:":4" }} emitidos al cierre de {{ prueba_desde|slice:":4"|add:"-1" }}; líneas punteadas: valores ajustados en el entrenamiento (2015 a {{ prueba_desde|slice:":4"|add:"-1" }}). El área sombreada en verde corresponde al periodo de evaluación.</p>
+  {% include "agro/_grafica.html" with id="fig-validacion" figura=grafica_validacion etiqueta="Precio observado y pronósticos de validación por modelo" %}
+  {% include "agro/_discontinuidad.html" with huecos=huecos_validacion sombreado=True semanal=True %}
+  <h3>Error de pronóstico en {{ prueba_desde|slice:":4" }}</h3>
+  <p class="nota">RMSE y MAE miden la diferencia promedio entre el pronóstico y el precio real, en {{ unidad }}; MAPE la expresa en porcentaje. Entre más bajos, más se acercó el modelo al precio observado.</p>
+  <div class="tabla-envoltura" tabindex="0" role="region" aria-label="Métricas de error por modelo">
+    <table class="tabla">
+      <thead><tr><th scope="col">Modelo</th><th scope="col">RMSE ({{ unidad }})</th><th scope="col">MAE ({{ unidad }})</th><th scope="col">MAPE (%)</th></tr></thead>
+      <tbody>{% for m in modelo_metricas %}<tr{% if m.modelo == modelo_mejor %} class="tabla__fila--destacada"{% endif %}><th scope="row">{{ m.modelo }}</th><td>{{ m.rmse|floatformat:3 }}</td><td>{{ m.mae|floatformat:3 }}</td><td>{{ m.mape|floatformat:2 }}</td></tr>{% endfor %}</tbody>
+    </table>
+  </div>
+  <p class="nota">Las filas «con clima observado (referencia)» usan el clima real de 2025, que no se conocía al emitir el pronóstico, y no se consideran para elegir el modelo de menor error.</p>
+  <h3>Modelos estimados</h3>
+  <div class="tabla-envoltura" tabindex="0" role="region" aria-label="Parámetros de los modelos">
+    <table class="tabla">
+      <tbody>
+        <tr><th scope="row">SARIMA y SARIMAX: orden (p, d, q)</th><td>({{ modelo.parametros.orden|join:", " }})</td></tr>
+        <tr><th scope="row">Orden estacional (P, D, Q, s)</th><td>({{ modelo.parametros.estacional|join:", " }})</td></tr>
+        {% if modelo.con_clima %}<tr><th scope="row">Rezago del clima (semanas)</th><td>{{ modelo.parametros.rezago }}</td></tr>
+        <tr><th scope="row">AIC SARIMA / SARIMAX</th><td>{{ modelo.resumen|get_item:"AIC SARIMA"|floatformat:2 }} / {{ modelo.resumen|get_item:"AIC SARIMAX"|floatformat:2 }}</td></tr>{% endif %}
+        <tr><th scope="row">Ljung-Box, valor p (10 / 52 rezagos)</th><td>{{ modelo.resumen|get_item:"Ljung-Box p (10)"|floatformat:3 }} / {{ modelo.resumen|get_item:"Ljung-Box p (52)"|floatformat:3 }}</td></tr>
+        <tr><th scope="row">STL: tendencia / estacional / residuo</th><td>{{ modelo.stl|get_item:"Modelo tendencia" }} / {{ modelo.stl|get_item:"Modelo estacional" }} / {{ modelo.stl|get_item:"Modelo residuo" }}</td></tr>
+        {% for k in modelo.koyck %}<tr><th scope="row">Koyck ({{ k.Forma }}): λ e intervalo al 95 %</th><td>{{ k|get_item:"λ"|floatformat:3 }} {{ k|get_item:"IC95 λ" }}</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% elif productos_modelados %}
+<p class="nota">La validación de pronósticos está disponible para {{ productos_modelados }}.</p>
+{% elif modelado_no_disponible %}
+{% include "agro/_vacio.html" with mensaje="Los resultados de la validación de pronósticos no están disponibles en este momento." %}
+{% endif %}
+{% if grafica_stl %}
+<section aria-labelledby="t-stl">
+  <h2 id="t-stl">Comportamiento histórico: tendencia, patrones de temporada y variaciones</h2>
+  <p class="nota">El método STL separa la serie histórica en tendencia (la dirección general del precio), patrones que se repiten en ciertas épocas del año y variaciones restantes.</p>
+  <p class="nota">Detalle técnico: descomposición estacional aditiva mediante el método STL, con un ciclo anual de 52 semanas, aplicada directamente al precio (sin logaritmos): en cada semana, la serie es la suma de la tendencia, la estacionalidad y el residuo, todos en {{ unidad }}. La estacionalidad y el residuo se expresan como desviaciones en {{ unidad }} y oscilan alrededor de cero. Para este cálculo, las semanas sin cotización se estiman por interpolación lineal; el primer panel muestra la serie resultante.</p>
+  {% include "agro/_grafica.html" with id="fig-stl" figura=grafica_stl etiqueta="Descomposición de la serie en tendencia, estacionalidad y residuo" %}
+</section>
+{% endif %}
+<section aria-labelledby="t-falt">
+  <h2 id="t-falt">Semanas sin cotización por año y mes</h2>
+  <p class="nota">Proporción de semanas de cada mes sin cotización registrada.</p>
+  {% include "agro/_grafica.html" with id="fig-faltantes" figura=grafica_faltantes etiqueta="Mapa de calor de semanas sin cotización por año y mes" %}
+</section>
+{% endif %}
+{% endblock %}

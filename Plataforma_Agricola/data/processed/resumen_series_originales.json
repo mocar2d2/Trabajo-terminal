@@ -1,0 +1,46 @@
+{
+  "Maíz blanco": {
+    "semanas": 574,
+    "pct_faltantes": 3.8327526132404177,
+    "descomposicion": true,
+    "advertencias": []
+  },
+  "Maíz blanco pozolero": {
+    "semanas": 437,
+    "pct_faltantes": 3.6613272311212817,
+    "descomposicion": true,
+    "advertencias": []
+  },
+  "Frijol Pinto": {
+    "semanas": 574,
+    "pct_faltantes": 3.3101045296167246,
+    "descomposicion": true,
+    "advertencias": []
+  },
+  "Frijol Negro": {
+    "semanas": 92,
+    "pct_faltantes": 1.0869565217391304,
+    "descomposicion": false,
+    "advertencias": [
+      "Frijol Negro: historial insuficiente (se necesitan 104 semanas) para la descomposición."
+    ]
+  },
+  "Haba": {
+    "semanas": 574,
+    "pct_faltantes": 3.1358885017421603,
+    "descomposicion": true,
+    "advertencias": []
+  },
+  "Aguacate Hass - Primera": {
+    "semanas": 575,
+    "pct_faltantes": 2.608695652173913,
+    "descomposicion": true,
+    "advertencias": []
+  },
+  "Tomate Saladette - Primera": {
+    "semanas": 575,
+    "pct_faltantes": 2.608695652173913,
+    "descomposicion": true,
+    "advertencias": []
+  }
+}

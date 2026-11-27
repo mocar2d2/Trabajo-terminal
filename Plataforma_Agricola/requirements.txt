@@ -1,0 +1,11 @@
+# Dependencias de la aplicación web (versiones verificadas con Python 3.12 en Windows).
+# Las bibliotecas adicionales para reproducir el cuaderno se indican en README.md.
+Django==5.2.17
+pandas==2.3.3
+numpy==2.5.3
+statsmodels==0.15.0
+folium==0.20.0
+branca==0.8.2
+plotly==7.1.0
+waitress==3.0.2
+whitenoise==6.12.0

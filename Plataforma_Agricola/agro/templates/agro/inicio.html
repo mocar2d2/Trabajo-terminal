@@ -1,0 +1,46 @@
+{% extends "agro/base.html" %}
+{% load formato %}
+{% block titulo %}Inicio{% endblock %}
+{% block contenido %}
+<section class="portada">
+  <h1>Precios y clima para agricultores y productores</h1>
+  <p class="portada__texto">Información dirigida principalmente a agricultores y productores agrícolas: comportamiento histórico de los precios mayoristas de maíz, frijol, haba, tomate y aguacate, condiciones de temperatura y lluvia en las regiones productoras y evaluación de los modelos de pronóstico disponibles.</p>
+  <p class="nota">Los precios son cotizaciones al mayoreo en la Central de Abasto de la Ciudad de México, registradas por el Sistema Nacional de Información e Integración de Mercados (SNIIM); no equivalen al precio que recibe el productor por su cosecha.</p>
+</section>
+
+<section aria-labelledby="t-resumen">
+  <h2 id="t-resumen" class="visualmente-oculto">Resumen</h2>
+  <div class="tarjetas tarjetas--4">
+    <div class="tarjeta-dato"><span class="tarjeta-dato__valor">{{ resumen.cultivos }}</span><span class="tarjeta-dato__etiqueta">cultivos y {{ resumen.productos }} productos</span></div>
+    <div class="tarjeta-dato"><span class="tarjeta-dato__valor">{{ resumen.registros_precio|cifra }}</span><span class="tarjeta-dato__etiqueta">cotizaciones de precio, de {{ resumen.precio_desde|mes_anio }} a {{ resumen.precio_hasta|mes_anio }}</span></div>
+    <div class="tarjeta-dato"><span class="tarjeta-dato__valor">{{ resumen.estaciones }}</span><span class="tarjeta-dato__etiqueta">estaciones meteorológicas en {{ resumen.estados_clima }} estados</span></div>
+    <div class="tarjeta-dato"><span class="tarjeta-dato__valor">{{ resumen.registros_clima|cifra }}</span><span class="tarjeta-dato__etiqueta">registros semanales de clima, de {{ resumen.clima_desde|mes_anio }} a {{ resumen.clima_hasta|mes_anio }}</span></div>
+  </div>
+</section>
+
+<section aria-labelledby="t-ultimos">
+  <h2 id="t-ultimos">Último precio por producto</h2>
+  <p class="nota">Precio frecuente del día de cotización más reciente. Cuando ese día existen varios orígenes o presentaciones, se muestra su promedio.</p>
+  <div class="tarjetas tarjetas--productos">
+    {% for u in ultimos %}
+    <a class="tarjeta-producto" href="{% url 'agro:precios' %}?producto={{ u.producto|urlencode }}">
+      <span class="tarjeta-producto__nombre">{{ u.producto|producto_publico }}</span>
+      <span class="tarjeta-producto__precio">${{ u.precio|floatformat:2 }}</span>
+      <span class="tarjeta-producto__meta">{{ unidades|get_item:u.categoria }} · {{ u.fecha|fecha_larga }}{% if u.registros_dia > 1 %} · promedio de {{ u.registros_dia }} cotizaciones{% endif %}</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section aria-labelledby="t-secciones">
+  <h2 id="t-secciones">Secciones</h2>
+  <div class="tarjetas tarjetas--3">
+    <a class="tarjeta-enlace" href="{% url 'agro:precios' %}"><h3>Precios</h3><p>Evolución de los precios por producto, origen, presentación y periodo, con sus mínimos y máximos y el tiempo aproximado hasta la cosecha de cada cultivo.</p></a>
+    <a class="tarjeta-enlace" href="{% url 'agro:clima' %}"><h3>Clima</h3><p>Mapas de temperatura y precipitación por estado, año y mes, y la serie semanal del estado elegido.</p></a>
+    <a class="tarjeta-enlace" href="{% url 'agro:prediccion' %}"><h3>Series y pronóstico</h3><p>Serie semanal de cada producto, con su tendencia, su comportamiento estacional y la evaluación de los modelos de pronóstico en 2025.</p></a>
+    <a class="tarjeta-enlace" href="{% url 'agro:eda' %}"><h3>Análisis por año y mes</h3><p>Variación de los precios a lo largo del año y entre un año y otro.</p></a>
+    <a class="tarjeta-enlace" href="{% url 'agro:sequia' %}"><h3>Sequía y temperatura</h3><p>Precipitación y temperatura por estado frente a los umbrales de referencia de cada cultivo.</p></a>
+    <a class="tarjeta-enlace" href="{% url 'agro:comparar' %}"><h3>Precio y clima</h3><p>Comparación del precio de un producto con el clima de su estado de origen.</p></a>
+  </div>
+</section>
+{% endblock %}

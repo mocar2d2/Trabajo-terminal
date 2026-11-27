@@ -1,0 +1,61 @@
+{% extends "agro/base.html" %}
+{% load static %}
+{% block titulo %}Clima{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'agro/vendor/leaflet/leaflet.css' %}">
+<script src="{% static 'agro/vendor/leaflet/leaflet.js' %}"></script>
+<script>var L_NO_TOUCH = false, L_DISABLE_3D = false;</script>
+{% endblock %}
+{% block contenido %}
+<header class="seccion-encabezado">
+  <h1>Temperatura y precipitación</h1>
+  <p>Temperatura y precipitación registradas por las estaciones meteorológicas de los municipios con mayor producción agrícola.</p>
+</header>
+{% include "agro/_formulario.html" with form=form %}
+{% if sin_datos %}{% include "agro/_vacio.html" with mensaje=sin_datos %}{% else %}
+<section aria-labelledby="t-mapa">
+  <h2 id="t-mapa">{{ meta.etiqueta }} en {% if estado_mapa %}{{ estado_mapa }}, {% endif %}{{ periodo }}</h2>
+  <p class="nota">{% if variable == "PRECIP" %}Precipitación acumulada en el periodo.{% else %}Temperatura promedio del periodo.{% endif %}
+  {% if mapa.usa_estaciones %}Cada círculo representa una estación meteorológica.{% elif estado_mapa %}El círculo resume {{ tabla_estaciones|length }} estaci{{ tabla_estaciones|length|pluralize:"ón,ones" }} del estado y se ubica en su capital como punto de referencia.{% else %}Cada círculo resume las estaciones de un estado y se ubica en su capital como punto de referencia.{% endif %}</p>
+  <div class="mapa">
+    <div class="mapa__lienzo" data-vista="{{ mapa.vista_json }}" data-base-geo="{% static 'agro/geo/mexico_estados.geojson' %}" data-teselas="{{ mapa.teselas_externas|yesno:'1,0' }}" data-estado="{{ estado_mapa }}">{{ mapa.html|safe }}</div>
+    <div class="leyenda" aria-label="Leyenda de colores">
+      <span class="leyenda__titulo">{{ meta.etiqueta }} ({{ meta.unidad }})</span>
+      <span class="leyenda__barra" style="background: {{ mapa.gradiente }}"></span>
+      <span class="leyenda__extremos"><span>{{ mapa.leyenda.0.valor }}</span><span>{{ mapa.leyenda.2.valor }}</span><span>{{ mapa.leyenda.4.valor }}</span></span>
+      <span class="leyenda__nota">{% if variable == "PRECIP" %}Acumulada en el periodo; {% else %}Promedio del periodo; {% endif %}escala de colores entre el mínimo y el máximo de la selección.</span>
+    </div>
+  </div>
+  <script>{{ mapa.script|safe }}</script>
+  <details class="detalle">
+    <summary>{% if tabla_estaciones %}Valores por estación{% else %}Valores por estado{% endif %}</summary>
+    {% if tabla_estaciones %}
+    <div class="tabla-envoltura" tabindex="0" role="region" aria-label="Tabla de valores por estación">
+      <table class="tabla">
+        <thead><tr><th scope="col">Estación</th><th scope="col">{{ meta.etiqueta }} ({{ meta.unidad }})</th><th scope="col">Semanas con datos</th></tr></thead>
+        <tbody>{% for f in tabla_estaciones %}<tr><th scope="row">{{ f.id_estacion }}</th><td>{{ f.valor|floatformat:1 }}</td><td>{{ f.semanas }}</td></tr>{% endfor %}</tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="tabla-envoltura" tabindex="0" role="region" aria-label="Tabla de valores por estado">
+      <table class="tabla">
+        <thead><tr><th scope="col">Estado</th><th scope="col">{{ meta.etiqueta }} ({{ meta.unidad }})</th><th scope="col">Estaciones</th><th scope="col">Mínimo entre estaciones</th><th scope="col">Máximo entre estaciones</th></tr></thead>
+        <tbody>{% for f in tabla_estados %}<tr><th scope="row">{{ f.estado }}</th><td>{{ f.valor|floatformat:1 }}</td><td>{{ f.estaciones }}</td><td>{{ f.vmin|floatformat:1 }}</td><td>{{ f.vmax|floatformat:1 }}</td></tr>{% endfor %}</tbody>
+      </table>
+    </div>
+    {% endif %}
+  </details>
+</section>
+{% if not estado %}<p class="nota">Para ver la serie semanal de un estado, elíjalo en el filtro «Estado» y aplique los filtros.</p>{% endif %}
+{% endif %}
+{% if estado %}
+<section aria-labelledby="t-serie">
+  <h2 id="t-serie">Serie semanal de {{ estado }}</h2>
+  {% if serie_sin_datos %}{% include "agro/_vacio.html" with mensaje=serie_sin_datos %}
+  {% elif grafica_estado %}
+  <p class="nota">Promedio semanal de las estaciones del estado. Cada semana termina el miércoles y se rotula con esa fecha en el eje horizontal.</p>
+  {% include "agro/_grafica.html" with id="fig-clima" figura=grafica_estado etiqueta="Serie semanal de la variable climática en el estado seleccionado" %}
+  {% endif %}
+</section>
+{% endif %}
+{% endblock %}

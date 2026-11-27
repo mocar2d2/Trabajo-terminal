@@ -1,0 +1,56 @@
+{% load static %}<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light only">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="Precios mayoristas de cultivos agrícolas en México y condiciones de temperatura y precipitación en las regiones productoras.">
+  <title>{% block titulo %}Inicio{% endblock %} · {{ nombre_plataforma }}</title>
+  <link rel="icon" href="{% url 'agro:favicon' %}" type="image/svg+xml">
+  <link rel="stylesheet" href="{% static 'agro/css/app.css' %}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <a class="saltar" href="#contenido">Ir al contenido principal</a>
+  <header class="encabezado">
+    <div class="contenedor encabezado__barra">
+      <a class="marca" href="{% url 'agro:inicio' %}">
+        <svg class="marca__icono" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M16 4c-5 6-7 10.5-7 14.5a7 7 0 0 0 14 0C23 14.5 21 10 16 4Z" fill="#1f8a5b"/><path d="M16 12v16M16 20l-4-3M16 17l4-3" stroke="#0b4f35" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+        <span>{{ nombre_plataforma }}</span>
+      </a>
+      <button class="menu-boton" type="button" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir o cerrar el menú de navegación">
+        <span class="menu-boton__barras" aria-hidden="true"></span><span class="menu-boton__texto">Menú</span>
+      </button>
+      <nav id="menu-principal" class="menu" aria-label="Navegación principal">
+        <ul>
+          {% for item in navegacion %}
+          <li><a href="{% url item.url %}"{% if item.activo %} aria-current="page"{% endif %}>{{ item.texto }}</a></li>
+          {% endfor %}
+        </ul>
+      </nav>
+    </div>
+  </header>
+  {% if aviso_actualizacion %}
+  <div class="aviso-global" role="status"><div class="contenedor">Plataforma en actualización. Algunas secciones pueden estar temporalmente no disponibles.</div></div>
+  {% endif %}
+  <main id="contenido" class="contenedor principal" tabindex="-1">
+    {% if sin_carga %}
+    <div class="estado-vacio" role="status">
+      <h1>Información no disponible</h1>
+      <p>La información de esta sección no está disponible por el momento. Intente nuevamente más tarde.</p>
+    </div>
+    {% else %}
+    {% block contenido %}{% endblock %}
+    {% endif %}
+  </main>
+  <footer class="pie">
+    <div class="contenedor pie__contenido">
+      <p>Fuentes: Sistema Nacional de Información e Integración de Mercados (SNIIM) y Servicio Meteorológico Nacional (SMN).</p>
+    </div>
+  </footer>
+  <script src="{% static 'vendor/plotly.min.js' %}" defer></script>
+  <script src="{% static 'agro/js/app.js' %}" defer></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
